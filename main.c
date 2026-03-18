@@ -6,38 +6,48 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 11:51:06 by eburnet           #+#    #+#             */
-/*   Updated: 2026/03/18 15:05:37 by eburnet          ###   ########.fr       */
+/*   Updated: 2026/03/18 16:13:53 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/mman.h>
-#include <string.h>
+#include "ft_nm.h"
 
 int main(int argc, char *argv[])
 {
 	int file_length = 0;
 	int fd_file;
 	char *filename = "a.out";
-
-	// check argc <= 2
-		// if (argc == 2)
-			// check argv[1] != null && argv[1] != ""
-			// char filename = argv[1]
-	// fd_file = open(filename);
-	// check if filename exist (open)
-	// check if filnemae is an ELF binary
-		/* read the first 16 bytes to check the file identity. 
-			The first four bytes will equal {0x7f, 'E', 'L', 'F'} */
+	struct stat fstat_res;
+	if (argc > 2)
+	{
+		perror("ft_nm: Too much args");
+		return (1);
+	}
+	if (argc == 2)
+	{
+		if (argv[1] == NULL || ft_strncmp(argv[1], "", 1) == 0)
+			return (1);
+		else
+			filename = argv[1];
+	}
+	fd_file = open(filename, O_RDONLY);
+	if (fd_file < 0)
+	{
+		ft_putstr_fd("ft_nm: '", 2);
+		ft_putstr_fd(filename, 2);
+		perror("'");
+		return (1);
+	}
 	// verifier que le fichier est nul terminer
 		// ??
-	/* fstat depuis un fd stock dans une struc ses infos technique 
-		(stock sa taille en bits) */
-	/* mmap stock le contenu d'un fichier en memoire en lui donnant le fd 
-		mais aussi la size contenue dans la struct de fstats */
-	// void *addr = mmap(NULL, file_length, PROT_READ, MAP_PRIVATE, fd_file, offset);
-		// offset multiple de page size (getpagesize())
-	/* Pour lire dans le fichier ELF il faut parcourir le Header
-		ELF puis acceder aux diferentes sections */
+
+	fstat(fd_file, &fstat_res);
+	file_length = fstat_res.st_size;
+	void *ptr = mmap(NULL, file_length, PROT_READ, MAP_PRIVATE, fd_file, getpagesize());
+	Elf64_Ehdr *e_head = (Elf64_Ehdr *)ptr;
+	if (!(e_head->e_ident[EI_MAG0] == ELFMAG0 || e_head->e_ident[EI_MAG1] == ELFMAG1 || e_head->e_ident[EI_MAG2] == ELFMAG2 || e_head->e_ident[EI_MAG3] == ELFMAG3))
+		return (ft_putstr_fd("ft_nm: file format not recognized\n", 2), 1);
+	printf("ACTUALL END\n");
 	// QUESTION:
 		// de quoi est composer le header ?
 			/* composer en premier de e_ident (un tableau d'octet) qui permet de definir le 

@@ -1,1 +1,5 @@
-/main.o
+/*.o
+libft/*.o
+ft_nm
+libft/libft.a
+.gitignore
