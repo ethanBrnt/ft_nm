@@ -3,3 +3,7 @@ libft/*.o
 ft_nm
 libft/libft.a
 .gitignore
+ft_out
+.gitignore
+.vscode/c_cpp_properties.json
+nm_out

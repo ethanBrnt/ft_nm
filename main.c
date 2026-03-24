@@ -6,54 +6,68 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 11:51:06 by eburnet           #+#    #+#             */
-/*   Updated: 2026/03/20 16:12:23 by eburnet          ###   ########.fr       */
+/*   Updated: 2026/03/24 15:09:03 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 
-int	do32(void *ptr, void *ptr_e_shoff, int section_nbr, int section_size)
+// int	do32(void *ptr, void *ptr_e_shoff, int section_nbr, int shead_size)
+// {
+// 	// redoo
+// 	return (0);
+// }
+
+int	do64(void *ptr, void *ptr_e_shoff, int section_nbr)
 {
-	Elf32_Shdr *s_head = (Elf32_Shdr *)ptr_e_shoff;
-}
-
-int	do64(void *ptr, void *ptr_e_shoff, int section_nbr, int section_size)
-{
-	Elf64_Shdr *s_head;
-	for (size_t i = 0; i < section_nbr; i++)
+	Elf64_Shdr *s_head_first = (Elf64_Shdr *)ptr_e_shoff;
+	Elf64_Shdr *s_head_sym;
+	Elf64_Shdr *s_head_str;
+	Elf64_Ehdr *e_head = (Elf64_Ehdr *)ptr;
+	for (int i = 0; i < section_nbr; i++)
 	{
-		s_head = (Elf64_Shdr *)ptr_e_shoff;
-		if (s_head->sh_type == SHT_SYMTAB)
-			break ;
-		// a verifier
-		ptr_e_shoff = ptr_e_shoff + section_size + sizeof(Elf64_Shdr);
+		Elf64_Shdr *s_head = (Elf64_Shdr *)ptr_e_shoff;
+		// ft_printf("s_head->sh_type: %d\n", s_head->sh_type);
+		if (s_head && s_head->sh_type && (s_head->sh_type == SHT_SYMTAB || s_head->sh_type == SHT_DYNSYM))
+			s_head_sym = s_head;
+		else if (s_head && s_head->sh_type && s_head->sh_type == SHT_STRTAB && s_head != s_head_first + e_head->e_shstrndx)
+				s_head_str = s_head;
+		ptr_e_shoff = ptr_e_shoff + sizeof(Elf64_Shdr);
 	}
-	if (s_head->sh_type != SHT_SYMTAB)
-		return (perror("SymTab not found"), 1);
-	int table_size = s_head->sh_entsize;
-	void *ptr_e_symoff = (char)ptr + s_head->sh_offset;
-	Elf64_Sym *sym_table;
-	// verifier calcul
-	while (((char)ptr_e_shoff - (char)ptr_e_symoff) <= section_size)
+	if (!s_head_sym || !s_head_str)
+		return (ft_putstr_fd("ft_nm: SymTab|StrTab not found\n", 2), 1);
+	if (s_head_sym->sh_entsize <= 0)
+		return (ft_putstr_fd("ft_nm: file format not recognized\n", 2), 1);
+	int symbol_nbr = s_head_sym->sh_size / s_head_sym->sh_entsize;
+	void *ptr_e_symoff = (char *)ptr + s_head_sym->sh_offset;
+	Elf64_Sym *sym_table = (Elf64_Sym *)ptr_e_symoff;
+	void *ptr_e_stroff = (char *)ptr + s_head_str->sh_offset;
+	char *str_table = (char *)ptr_e_stroff;
+	for (int i = 0; i < symbol_nbr; i++)
 	{
-		sym_table = (Elf64_Sym *)ptr_e_symoff;
-
-		ptr_e_symoff = ptr_e_symoff + s_head->sh_offset;
-
-		// comment parcourir la table de symbole ????
+		//.strtab pour name, infos ELF64_ST_TYPE et ELF64_ST_BIND
+		// trie en ordre alphabetic quel algo ?
+		// le padding de l'adresse avec printf
+		// if ELF64_ST_TYPE() >= 0 && ELF64_ST_TYPE() <= 2 || name != "" || name != null
+			// print
+			// le TYPE et le BIND modifie tout les deux la valeur du symbole maj min et +
+			// st_shndx est a pren dre en compte en fonction de la section
+			// a laquelle est lier le symbole
+		
+		// if (ELF64_ST_BIND() == STB_LOCAL || ELF64_ST_BIND() == STB_WEAK)
+			// min
+		// else if (ELF64_ST_BIND() == STB_GLOBAL)
+			// maj
+		char *name = str_table + sym_table[i].st_name;
+		ft_printf("%X %d %d %s\n", sym_table[i].st_value, ELF64_ST_TYPE(sym_table[i].st_info), ELF64_ST_BIND(sym_table[i].st_info), name);
 	}
-	// .strtab - symbol table, il faut donc lire dans la symbole table des fichier ELF
-	/* Elf[32-64]_Sym comporte les memes champs mais pas dans le meme ordre
-		st_name (nom du symbole), st_value (addr ?), st_info (type du symbole) */
-
+	return (0);
 }
 
 int main(int argc, char *argv[])
 {
 	int file_length = 0;
-	int fd_file;
 	char *filename = "a.out";
-	struct stat fstat_res;
 	bool arch32 = false;
 	if (argc > 2)
 		return (perror("ft_nm: Too much args"), 1);
@@ -64,7 +78,7 @@ int main(int argc, char *argv[])
 		else
 			filename = argv[1];
 	}
-	fd_file = open(filename, O_RDONLY);
+	int fd_file = open(filename, O_RDONLY);
 	if (fd_file < 0)
 	{
 		ft_putstr_fd("ft_nm: '", 2);
@@ -73,24 +87,33 @@ int main(int argc, char *argv[])
 		return (1);
 	}
 	// verifier que le fichier est nul terminer
-		// ??
-
+	// Faire la verif de la taille du fichier par rapport a celle annoncer par fstat
+	struct stat fstat_res;
 	fstat(fd_file, &fstat_res);
+	if (!S_ISREG(fstat_res.st_mode))
+	{
+		ft_putstr_fd("ft_nm: Warning: '", 2);
+		ft_putstr_fd(filename, 2);
+		ft_putstr_fd("' is a directory\n", 2);
+		return (1);
+	}
 	file_length = fstat_res.st_size;
 	void *ptr = mmap(NULL, file_length, PROT_READ, MAP_PRIVATE, fd_file, 0);
-	// Faire la verif der la taille du fichier par rapport a celle annoncer par fstat
+	if (ptr == MAP_FAILED)
+		return (ft_putstr_fd("ft_nm: mmap failed\n", 2), 1);
 	// Est-ce un pb de caster en 64 directement ? Tester avec fichier 32 subject
 	Elf64_Ehdr *e_head = (Elf64_Ehdr *)ptr;
-	if (e_head->e_ident[EI_MAG0] != ELFMAG0 && e_head->e_ident[EI_MAG1] != ELFMAG1 && e_head->e_ident[EI_MAG2] != ELFMAG2 && e_head->e_ident[EI_MAG3] != ELFMAG3)
+	if (e_head->e_ident[EI_MAG0] != ELFMAG0 || e_head->e_ident[EI_MAG1] != ELFMAG1 || e_head->e_ident[EI_MAG2] != ELFMAG2 || e_head->e_ident[EI_MAG3] != ELFMAG3)
+		return (ft_putstr_fd("ft_nm: file format not recognized\n", 2), 1);
+	if (e_head->e_shstrndx != e_head->e_shnum - 1)
 		return (ft_putstr_fd("ft_nm: file format not recognized\n", 2), 1);
 	if (e_head->e_ident[EI_CLASS] == ELFCLASS32)
 		arch32 = true;
-	// pour les fichiers objs recup de type pour SHT_DYNSYM ??
 	void *ptr_e_shoff = (char *)ptr + e_head->e_shoff;
 	int section_nbr = e_head->e_shnum;
-	int section_size = e_head->e_shentsize;
-	if (arch32)
-		do32(ptr, ptr_e_shoff, section_nbr, section_size);
-	else
-		do64(ptr, ptr_e_shoff, section_nbr, section_size);
+	(void)arch32;
+	// if (arch32)
+	// 	return (do32(ptr, ptr_e_shoff, section_nbr));
+	// else
+		return (do64(ptr, ptr_e_shoff, section_nbr));
 }
