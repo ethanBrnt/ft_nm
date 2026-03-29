@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 15:39:13 by eburnet           #+#    #+#             */
-/*   Updated: 2026/03/23 16:16:28 by eburnet          ###   ########.fr       */
+/*   Updated: 2026/03/26 10:58:48 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,3 +21,4 @@
 #include <elf.h>
 #include <stdbool.h>
 #include <unistd.h>
+#include <stdlib.h>
