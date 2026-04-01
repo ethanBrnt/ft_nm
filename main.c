@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 11:51:06 by eburnet           #+#    #+#             */
-/*   Updated: 2026/03/27 17:10:04 by eburnet          ###   ########.fr       */
+/*   Updated: 2026/04/01 16:07:42 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@
 	{
 		Stype = -1;
 		Sflags = -1;
-	}	
+	}
 	else if (sym_table[i].st_shndx == SHN_UNDEF)
 	{
 		Stype = 0;
 		Sflags = 0;
 	}
-	else 
+	else
 	{
 		Sflags = s_head_first[sym_table[i].st_shndx].sh_flags;
 		Stype = s_head_first[sym_table[i].st_shndx].sh_type;
@@ -36,10 +36,10 @@
 		// print
 		// le TYPE et le BIND modifie tout les deux la valeur du symbole maj min
 		// mais auusi la lettre en fonction de st_shndx cela donne acces a la sectiion
-		// d'ou provient le symbole et on regarder sh_flags et sh_type pour definir la 
+		// d'ou provient le symbole et on regarder sh_flags et sh_type pour definir la
 		// lettre. SI st_shndx == SHN_UNDEF alors la lettre seras u ou w
-	
-	// Table de corsepondance 
+
+	// Table de corsepondance
 
 	// if (ELF64_ST_BIND() == STB_LOCAL || ELF64_ST_BIND() == STB_WEAK)
 		// min
@@ -53,7 +53,7 @@
 // 	return (0);
 // }
 
-char *padding_management(int st_value,char type)
+char *padding_management(int st_value, char type)
 {
 	char *padding = malloc(sizeof(char) * 16);
 	if (!padding)
@@ -74,17 +74,7 @@ char *padding_management(int st_value,char type)
 	return (padding);
 }
 
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	while (*s1 && *s1 == *s2)
-	{
-		s1++;
-		s2++;
-	}
-	return (*(unsigned char *)s1 - *(unsigned char *)s2);
-}
-
-int	do64(void *ptr, void *ptr_e_shoff, int section_nbr)
+int do64(void *ptr, void *ptr_e_shoff, int section_nbr)
 {
 	Elf64_Shdr *s_head_first = (Elf64_Shdr *)ptr_e_shoff;
 	Elf64_Shdr *s_head_sym;
@@ -96,7 +86,7 @@ int	do64(void *ptr, void *ptr_e_shoff, int section_nbr)
 		if (s_head && s_head->sh_type && (s_head->sh_type == SHT_SYMTAB || s_head->sh_type == SHT_DYNSYM))
 			s_head_sym = s_head;
 		else if (s_head && s_head->sh_type && s_head->sh_type == SHT_STRTAB && s_head != s_head_first + e_head->e_shstrndx)
-				s_head_str = s_head;
+			s_head_str = s_head;
 		ptr_e_shoff = ptr_e_shoff + sizeof(Elf64_Shdr);
 	}
 	if (!s_head_sym || !s_head_str)
@@ -108,14 +98,32 @@ int	do64(void *ptr, void *ptr_e_shoff, int section_nbr)
 	Elf64_Sym *sym_table = (Elf64_Sym *)ptr_e_symoff;
 	void *ptr_e_stroff = (char *)ptr + s_head_str->sh_offset;
 	char *str_table = (char *)ptr_e_stroff;
-	// trie en ordre alphabetic de str_table	
-		// int tab[];
-		// stock index parcour sym_table
-		// creer tableau, boucle for stocker les indexes 0 - n
-		// parcourir le tableau depuis 0
-		// comparer 0 et 1 (char *name1 = str_table + sym_table[i].st_name et name2)
-		// int res = ft_strcmp(name1, name2)
-		// Le tri par sélection - Le tri rapide 
+	int *tabStrIndex = malloc(sizeof(int) * symbol_nbr);
+
+	int strTabLen = 0;
+	for (int i = 0; i < symbol_nbr; i++)
+	{
+		if (sym_table[i].st_name != 0)
+		{
+			tabStrIndex[strTabLen] = sym_table[i].st_name;
+			ft_printf("%d, ", tabStrIndex[strTabLen]); //
+			strTabLen++;
+		}
+	}
+	ft_printf("\n");
+	quick_sort(tabStrIndex, 0, strTabLen, str_table);
+	for (int i = 0; i < strTabLen; i++)
+	{
+		ft_printf("%d: %s\n ", tabStrIndex[i], str_table + tabStrIndex[i]); //
+	}
+	// trie en ordre alphabetic de str_table
+	// int tab[];
+	// stock index parcour sym_table
+	// creer tableau, boucle for stocker les indexes 0 - n
+	// parcourir le tableau depuis 0
+	// int res = ft_strcmp(name1, name2)
+	//  Le tri rapide
+
 	for (int i = 0; i < symbol_nbr; i++)
 	{
 		char *name = str_table + sym_table[i].st_name;
@@ -183,5 +191,5 @@ int main(int argc, char *argv[])
 	// if (arch32)
 	// 	return (do32(ptr, ptr_e_shoff, section_nbr));
 	// else
-		return (do64(ptr, ptr_e_shoff, section_nbr));
+	return (do64(ptr, ptr_e_shoff, section_nbr));
 }

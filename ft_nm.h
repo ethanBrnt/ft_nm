@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 15:39:13 by eburnet           #+#    #+#             */
-/*   Updated: 2026/03/26 10:58:48 by eburnet          ###   ########.fr       */
+/*   Updated: 2026/04/01 11:50:02 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,3 +22,5 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include <stdlib.h>
+
+void quick_sort(int *tab, int start, int end, char *str_table );
