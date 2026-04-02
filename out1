@@ -1,0 +1,103 @@
+DEBUG: st_type:1 st_bind:0 sh_type:6 sh_flags:3
+0000000000004d88 d _DYNAMIC
+DEBUG: st_type:1 st_bind:0 sh_type:1 sh_flags:3
+0000000000004f78 d _GLOBAL_OFFSET_TABLE_
+DEBUG: st_type:1 st_bind:1 sh_type:1 sh_flags:2
+0000000000003000 r _IO_stdin_used
+                 w _ITM_deregisterTMCloneTable
+                 w _ITM_registerTMCloneTable
+DEBUG: st_type:1 st_bind:0 sh_type:1 sh_flags:2
+0000000000003568 r __FRAME_END__
+DEBUG: st_type:0 st_bind:0 sh_type:1 sh_flags:2
+0000000000003144 r __GNU_EH_FRAME_HDR
+DEBUG: st_type:1 st_bind:1 sh_type:1 sh_flags:3
+0000000000005010 D __TMC_END__
+DEBUG: st_type:1 st_bind:0 sh_type:7 sh_flags:2
+000000000000038c R __abi_tag
+DEBUG: st_type:0 st_bind:1 sh_type:8 sh_flags:3
+0000000000005010 B __bss_start
+                 w __cxa_finalize@GLIBC_2.2.5
+DEBUG: st_type:0 st_bind:1 sh_type:1 sh_flags:3
+0000000000005000 D __data_start
+DEBUG: st_type:2 st_bind:0 sh_type:1 sh_flags:6
+0000000000001200 t __do_global_dtors_aux
+DEBUG: st_type:1 st_bind:0 sh_type:15 sh_flags:3
+0000000000004d80 d __do_global_dtors_aux_fini_array_entry
+DEBUG: st_type:1 st_bind:1 sh_type:1 sh_flags:3
+0000000000005008 D __dso_handle
+DEBUG: st_type:1 st_bind:0 sh_type:14 sh_flags:3
+0000000000004d78 d __frame_dummy_init_array_entry
+                 w __gmon_start__
+                 U __libc_start_main@GLIBC_2.34
+                 U __stack_chk_fail@GLIBC_2.4
+DEBUG: st_type:0 st_bind:1 sh_type:1 sh_flags:3
+0000000000005010 D _edata
+DEBUG: st_type:0 st_bind:1 sh_type:8 sh_flags:3
+0000000000005018 B _end
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+0000000000002794 T _fini
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+0000000000001000 T _init
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+0000000000001160 T _start
+DEBUG: st_type:1 st_bind:0 sh_type:8 sh_flags:3
+0000000000005010 b completed.0
+DEBUG: st_type:0 st_bind:2 sh_type:1 sh_flags:3
+0000000000005000 W data_start
+DEBUG: st_type:2 st_bind:0 sh_type:1 sh_flags:6
+0000000000001190 t deregister_tm_clones
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+000000000000182f T find_sym_str_tab_64
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+0000000000001249 T find_sym_type
+DEBUG: st_type:2 st_bind:0 sh_type:1 sh_flags:6
+0000000000001240 t frame_dummy
+                 U free@GLIBC_2.2.5
+                 U fstat@GLIBC_2.33
+DEBUG: st_type:2 st_bind:0 sh_type:1 sh_flags:6
+0000000000002502 t ft_count_digits
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+0000000000001f10 T ft_memset
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+000000000000206b T ft_p
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+00000000000023d3 T ft_printf
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+000000000000203d T ft_putchar
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+0000000000002669 T ft_putnbr
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+000000000000256d T ft_putnbr_base
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+00000000000025f8 T ft_putnbr_unsigned
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+0000000000002722 T ft_putstr
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+0000000000001f4f T ft_putstr_fd
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+0000000000001ce6 T ft_strcmp
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+0000000000001f8e T ft_strlen
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+0000000000001fbf T ft_strncmp
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+0000000000002110 T ft_type_management
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+0000000000001bd3 T main
+                 U malloc@GLIBC_2.2.5
+                 U memset@GLIBC_2.2.5
+                 U mmap@GLIBC_2.2.5
+                 U open@GLIBC_2.2.5
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+0000000000001443 T padding_management
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+00000000000019b7 T parsing_mmaping
+                 U perror@GLIBC_2.2.5
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+0000000000001d6a T quick_sort
+DEBUG: st_type:2 st_bind:0 sh_type:1 sh_flags:6
+00000000000011c0 t register_tm_clones
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+0000000000001519 T sort_print_data
+DEBUG: st_type:2 st_bind:1 sh_type:1 sh_flags:6
+0000000000001d39 T swap

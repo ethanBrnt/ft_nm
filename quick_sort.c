@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 11:49:33 by eburnet           #+#    #+#             */
-/*   Updated: 2026/04/01 17:01:23 by eburnet          ###   ########.fr       */
+/*   Updated: 2026/04/02 12:32:11 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,13 @@ void quick_sort(int *tab, int start, int end, char *str_table )
 	int pivot = tab[(start + end) / 2];
 	while (i <= j)
 	{
-		while (i <= end && ft_strcmp(str_table + pivot, str_table + tab[i]) > 0)
-		{
-			printf("i: %d\n", i);
+		while (i <= end && tab[i] && ft_strcmp(str_table + pivot, str_table + tab[i]) > 0)
 			i++;
-		}
-		while (j >= start && ft_strcmp(str_table + pivot, str_table + tab[j]) < 0)
-		{
-			printf("j: %d\n", j);
+		while (j >= start && tab[j] && ft_strcmp(str_table + pivot, str_table + tab[j]) < 0)
+
 			j--;
-		}
 		if (i <= j)
 		{
-			printf("swap i: %d, j: %d\n", tab[i], tab[j]);
 			swap(&tab[i], &tab[j]);
 			i++;
 			j--;
