@@ -6,61 +6,99 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 11:51:06 by eburnet           #+#    #+#             */
-/*   Updated: 2026/04/02 17:16:10 by eburnet          ###   ########.fr       */
+/*   Updated: 2026/04/03 12:03:32 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 
+int var;
 
 char find_sym_type(Elf64_Sym sym_tab_elem, Elf64_Shdr *s_head_first)
 {
-
+	(void)var;
+	int sh_type= -1;
+	int sh_flags = -1;
 	int st_type = ELF64_ST_TYPE(sym_tab_elem.st_info);
 	int st_bind = ELF64_ST_BIND(sym_tab_elem.st_info);
-	if (sym_tab_elem.st_shndx >= SHN_LORESERVE)
+	ft_printf("DEBUG: st_type:%d st_bind:%d\n", st_type, st_bind);
+	if (sym_tab_elem.st_shndx == SHN_ABS && st_type != STT_FILE)
+		return ('A');
+	else if (sym_tab_elem.st_shndx == SHN_COMMON)
+		return ('C');
+	else if (sym_tab_elem.st_shndx >= SHN_LORESERVE)
 		return ('e');
 	else if (sym_tab_elem.st_shndx == SHN_UNDEF)
 	{
-		if ((st_type == 0 || st_type == 2) && (st_bind == STB_LOCAL || st_bind == STB_WEAK))
+		if ((st_type == STT_NOTYPE || st_type == STT_FUNC) && (st_bind == STB_LOCAL || st_bind == STB_WEAK))
 			return ('w');
-		else if ((st_type == 0 || st_type == 2) && st_bind == STB_GLOBAL)
+		else if ((st_type == STT_NOTYPE || st_type == STT_FUNC) && st_bind == STB_GLOBAL)
 			return ('U');
 	}
-	int sh_type = s_head_first[sym_tab_elem.st_shndx].sh_type;
-	int sh_flags = s_head_first[sym_tab_elem.st_shndx].sh_flags;
-	ft_printf("DEBUG: st_type:%d st_bind:%d sh_type:%d sh_flags:%d\n", st_type, st_bind, sh_type, sh_flags);
-	if (st_type == 2 && sh_type == 1 && sh_flags == 6)
+	sh_type = s_head_first[sym_tab_elem.st_shndx].sh_type;
+	sh_flags = s_head_first[sym_tab_elem.st_shndx].sh_flags;
+	ft_printf("DEBUG:  sh_type:%d sh_flags:%d\n", sh_type, sh_flags);
+	if (st_type == STT_FUNC && sh_type == SHT_PROGBITS && sh_flags & SHF_EXECINSTR && sh_flags & SHF_ALLOC)
 	{
 		if (st_bind == STB_GLOBAL)
 			return ('T');
 		else if (st_bind == STB_LOCAL || st_bind == STB_WEAK)
 			return ('t');
 	}
-	else if (sh_type == 8 && sh_flags == 3)
+	else if (sh_flags & SHF_ALLOC && sh_flags & SHF_WRITE && !(sh_flags & SHF_EXECINSTR))
 	{
-		if (st_type == 0 && st_bind == STB_GLOBAL)
-			return ('B');
-		else if (st_type == 1 && (st_bind == STB_LOCAL || st_bind == STB_WEAK))
-			return ('b');
+		if (sh_type == SHT_NOBITS)
+		{
+			if (st_bind == STB_GLOBAL)
+				return ('B');
+			else if (st_bind == STB_LOCAL || st_bind == STB_WEAK)
+				return ('b');
+		}
+		else if (sh_type != SHT_NOBITS)
+		{
+			if (st_bind == STB_GLOBAL)
+				return ('D');
+			else if (st_bind == STB_LOCAL)
+				return ('d');
+			else if (st_bind == STB_WEAK)
+				return ('W');
+		}
 	}
-	else if ((st_type == 0 || st_type == 1) && (sh_flags == 2 || sh_flags == 18))
+	else if (sh_flags & SHF_ALLOC && !(sh_flags & SHF_WRITE) && !(sh_flags & SHF_EXECINSTR))
 	{
-		if (sh_type == 1 && (st_bind == STB_LOCAL || st_bind == STB_GLOBAL))
+		if (st_bind == STB_LOCAL || st_bind == STB_WEAK)
 			return ('r');
-		else if (sh_type == 7 && (st_bind == STB_LOCAL || st_bind == STB_WEAK || st_bind == STB_GLOBAL))
+		else if (st_bind == STB_GLOBAL)
 			return ('R');
 	}
-	else if (sh_flags == 3 && (st_type == 0 || st_type == 1))
-	{
-		if (st_bind == STB_GLOBAL)
-			return ('D');
-		else if (st_bind == STB_LOCAL)
-			return ('d');
-		else if (st_bind ==2)
-			return ('W');
-	}
-	return ('X');
+	else if (st_type == STT_NOTYPE && st_bind == STB_LOCAL)
+		return ('n');
+	return ('?');
+
+	/* 
+		< DEBUG: st_type:1 st_bind:1
+		< DEBUG:  sh_type:1 sh_flags:2
+		< 0000000000003000 r _IO_stdin_used
+		---
+		> 0000000000003000 R _IO_stdin_used
+		--------------------------------------
+		DEBUG: st_type:1 st_bind:0
+		DEBUG:  sh_type:1 sh_flags:2
+		0000000000003578 r __FRAME_END__
+		< DEBUG: st_type:1 st_bind:0
+		< DEBUG:  sh_type:7 sh_flags:2
+		< 000000000000038c R __abi_tag
+		---
+		> 000000000000038c r __abi_tag
+
+		-------------------------------------
+		>                  U write@GLIBC_2.2.5
+
+
+		main.o
+		187a94
+		> 0000000000000000 n wm4.wordsize.h.4.baf119258a1e53d8dba67ceac44ab6bc
+	*/
 }
 
 // int	do32(void *ptr, void *ptr_e_shoff, int section_nbr, int shead_size)

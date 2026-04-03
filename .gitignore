@@ -4,6 +4,11 @@ ft_nm
 libft/libft.a
 .gitignore
 ft_out
-.gitignore
 .vscode/c_cpp_properties.json
 nm_out
+out_mine.txt
+diff
+out_nm.txt
+test_abs
+out1
+out2
