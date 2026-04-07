@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 15:39:13 by eburnet           #+#    #+#             */
-/*   Updated: 2026/04/01 11:50:02 by eburnet          ###   ########.fr       */
+/*   Updated: 2026/04/07 10:43:15 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,3 +24,7 @@
 #include <stdlib.h>
 
 void quick_sort(int *tab, int start, int end, char *str_table );
+char find_sym_type_64(Elf64_Sym sym_tab_elem, Elf64_Shdr *s_head_first);
+char find_sym_type_32(Elf32_Sym sym_tab_elem, Elf32_Shdr *s_head_first);
+char *padding_management(int st_value, char type, bool is_32);
+void *parsing_mmaping(int argc, char *argv[]);

@@ -6,14 +6,14 @@
 #    By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/12 10:38:36 by eburnet           #+#    #+#              #
-#    Updated: 2026/04/01 11:50:12 by eburnet          ###   ########.fr        #
+#    Updated: 2026/04/07 10:05:31 by eburnet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_nm
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3
-SRCS = main.c quick_sort.c
+SRCS = main.c quick_sort.c utils.c
 OBJS = $(SRCS:.c=.o)
 HEADERS = ft_nm.h
 LIBFT_PATH = ./libft
