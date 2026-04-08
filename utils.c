@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 10:01:20 by eburnet           #+#    #+#             */
-/*   Updated: 2026/04/07 10:46:03 by eburnet          ###   ########.fr       */
+/*   Updated: 2026/04/08 13:12:42 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@ char find_sym_type_64(Elf64_Sym sym_tab_elem, Elf64_Shdr *s_head_first)
 	{
 		if ((st_type == STT_NOTYPE || st_type == STT_FUNC) && (st_bind == STB_LOCAL || st_bind == STB_WEAK))
 			return ('w');
-		else if ((st_type == STT_NOTYPE || st_type == STT_FUNC || st_type == STT_OBJECT) && st_bind == STB_GLOBAL)
+		else if ((st_type == STT_NOTYPE || st_type == STT_TLS || st_type == STT_FUNC || st_type == STT_OBJECT) && st_bind == STB_GLOBAL)
 			return ('U');
+		else if (st_type == STT_OBJECT && (st_bind == STB_LOCAL || st_bind == STB_WEAK))
+			return ('v');
 	}
 	sh_type = s_head_first[sym_tab_elem.st_shndx].sh_type;
 	sh_flags = s_head_first[sym_tab_elem.st_shndx].sh_flags;
@@ -90,8 +92,10 @@ char find_sym_type_32(Elf32_Sym sym_tab_elem, Elf32_Shdr *s_head_first)
 	{
 		if ((st_type == STT_NOTYPE || st_type == STT_FUNC) && (st_bind == STB_LOCAL || st_bind == STB_WEAK))
 			return ('w');
-		else if ((st_type == STT_NOTYPE || st_type == STT_FUNC || st_type == STT_OBJECT) && st_bind == STB_GLOBAL)
+		else if ((st_type == STT_NOTYPE || st_type == STT_TLS || st_type == STT_FUNC || st_type == STT_OBJECT) && st_bind == STB_GLOBAL)
 			return ('U');
+		else if (st_type == STT_OBJECT && (st_bind == STB_LOCAL || st_bind == STB_WEAK))
+			return ('v');
 	}
 	sh_type = s_head_first[sym_tab_elem.st_shndx].sh_type;
 	sh_flags = s_head_first[sym_tab_elem.st_shndx].sh_flags;

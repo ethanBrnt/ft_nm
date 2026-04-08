@@ -1,8 +1,11 @@
 #include <stdio.h>
 
+void	swap(int a, int b);
+
 int main() 
 { 
     printf("hello\n");
+    swap(1, 2);
     return 0; 
 }
 
