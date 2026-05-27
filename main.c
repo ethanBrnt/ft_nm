@@ -173,7 +173,6 @@ int main(int argc, char *argv[])
 	void *ptr = parsing_mmaping(argc, argv);
 	if (ptr == NULL)
 		return (1);
-	// Est-ce un pb de caster en 64 directement ? Tester avec fichier 32 subject
 	Elf64_Ehdr *e_head = (Elf64_Ehdr *)ptr;
 	if (e_head->e_ident[EI_CLASS] == ELFCLASS32)
 		return (find_sym_str_tab_32(ptr));

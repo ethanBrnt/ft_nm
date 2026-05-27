@@ -12,10 +12,17 @@
 
 #include "ft_nm.h"
 
-int	ft_strcmp(const char *s1, const char *s2)
+int ft_strcmp(char *s1, char *s2)
 {
-	while (*s1 && *s1 == *s2)
-	{
+	while (*s1 || *s2) {
+		while (*s1 && !ft_isalnum(*s1))
+			s1++;
+		while (*s2 && !ft_isalnum(*s2))
+			s2++;
+		char c1 = ft_tolower(*s1);
+		char c2 = ft_tolower(*s2);
+		if (c1 != c2)
+			return (c1 - c2);
 		s1++;
 		s2++;
 	}
@@ -39,7 +46,6 @@ void quick_sort(int *tab, int start, int end, char *str_table )
 		while (i <= end && tab[i] && ft_strcmp(str_table + pivot, str_table + tab[i]) > 0)
 			i++;
 		while (j >= start && tab[j] && ft_strcmp(str_table + pivot, str_table + tab[j]) < 0)
-
 			j--;
 		if (i <= j)
 		{

@@ -18,7 +18,6 @@ char find_sym_type_64(Elf64_Sym sym_tab_elem, Elf64_Shdr *s_head_first)
 	int sh_flags = -1;
 	int st_type = ELF64_ST_TYPE(sym_tab_elem.st_info);
 	int st_bind = ELF64_ST_BIND(sym_tab_elem.st_info);
-	// ft_printf("DEBUG: st_type:%d st_bind:%d\n", st_type, st_bind);
 	if (sym_tab_elem.st_shndx == SHN_ABS && st_type != STT_FILE)
 		return ('A');
 	else if (sym_tab_elem.st_shndx == SHN_COMMON)
@@ -36,7 +35,6 @@ char find_sym_type_64(Elf64_Sym sym_tab_elem, Elf64_Shdr *s_head_first)
 	}
 	sh_type = s_head_first[sym_tab_elem.st_shndx].sh_type;
 	sh_flags = s_head_first[sym_tab_elem.st_shndx].sh_flags;
-	// ft_printf("DEBUG:  sh_type:%d sh_flags:%d\n", sh_type, sh_flags);
 	if (st_type == STT_FUNC && sh_type == SHT_PROGBITS && sh_flags & SHF_EXECINSTR && sh_flags & SHF_ALLOC)
 	{
 		if (st_bind == STB_GLOBAL)
@@ -81,7 +79,6 @@ char find_sym_type_32(Elf32_Sym sym_tab_elem, Elf32_Shdr *s_head_first)
 	int sh_flags = -1;
 	int st_type = ELF64_ST_TYPE(sym_tab_elem.st_info);
 	int st_bind = ELF64_ST_BIND(sym_tab_elem.st_info);
-	// ft_printf("DEBUG: st_type:%d st_bind:%d\n", st_type, st_bind);
 	if (sym_tab_elem.st_shndx == SHN_ABS && st_type != STT_FILE)
 		return ('A');
 	else if (sym_tab_elem.st_shndx == SHN_COMMON)
@@ -99,7 +96,6 @@ char find_sym_type_32(Elf32_Sym sym_tab_elem, Elf32_Shdr *s_head_first)
 	}
 	sh_type = s_head_first[sym_tab_elem.st_shndx].sh_type;
 	sh_flags = s_head_first[sym_tab_elem.st_shndx].sh_flags;
-	// ft_printf("DEBUG:  sh_type:%d sh_flags:%d\n", sh_type, sh_flags);
 	if (st_type == STT_FUNC && sh_type == SHT_PROGBITS && sh_flags & SHF_EXECINSTR && sh_flags & SHF_ALLOC)
 	{
 		if (st_bind == STB_GLOBAL)
@@ -184,8 +180,6 @@ void *parsing_mmaping(int argc, char *argv[])
 		perror("'");
 		return (NULL);
 	}
-	// verifier que le fichier est nul terminer
-	// Faire la verif de la taille du fichier par rapport a celle annoncer par fstat
 	struct stat fstat_res;
 	fstat(fd_file, &fstat_res);
 	if (!S_ISREG(fstat_res.st_mode))
