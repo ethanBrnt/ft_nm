@@ -35,7 +35,7 @@ clean:
 	
 fclean: clean
 	rm -f $(NAME)
-	make -C $(LIBFT_PATH) clean
+	make -C $(LIBFT_PATH) fclean
 	
 re: fclean all
 
