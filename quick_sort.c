@@ -12,9 +12,24 @@
 
 #include "ft_nm.h"
 
-int ft_strcmp(char *s1, char *s2)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	while (*s1 || *s2) {
+	while (*s1 && *s1 == *s2)
+	{
+		s1++;
+		s2++;
+	}
+	return (*(unsigned char *)s1 - *(unsigned char *)s2);
+}
+
+
+int ft_strcmp_skip_special_char(char *s1, char *s2)
+{
+	char *origin_s1 = s1;
+	char *origin_s2 = s2;
+
+	while (*s1 || *s2)
+	{
 		while (*s1 && !ft_isalnum(*s1))
 			s1++;
 		while (*s2 && !ft_isalnum(*s2))
@@ -26,7 +41,7 @@ int ft_strcmp(char *s1, char *s2)
 		s1++;
 		s2++;
 	}
-	return (*(unsigned char *)s1 - *(unsigned char *)s2);
+	return (ft_strcmp(origin_s1, origin_s2));
 }
 
 void	swap(int *a, int *b)
@@ -43,10 +58,14 @@ void quick_sort(int *tab, int start, int end, char *str_table )
 	int pivot = tab[(start + end) / 2];
 	while (i <= j)
 	{
-		while (i <= end && tab[i] && ft_strcmp(str_table + pivot, str_table + tab[i]) > 0)
+		while (i <= end && tab[i] && ft_strcmp_skip_special_char(str_table + pivot, str_table + tab[i]) > 0)
+		{
 			i++;
-		while (j >= start && tab[j] && ft_strcmp(str_table + pivot, str_table + tab[j]) < 0)
+		}	
+		while (j >= start && tab[j] && ft_strcmp_skip_special_char(str_table + pivot, str_table + tab[j]) < 0)
+		{
 			j--;
+		}	
 		if (i <= j)
 		{
 			swap(&tab[i], &tab[j]);
