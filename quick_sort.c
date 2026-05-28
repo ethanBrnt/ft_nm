@@ -30,12 +30,20 @@ int ft_strcmp_skip_special_char(char *s1, char *s2)
 
 	while (*s1 || *s2)
 	{
-		while (*s1 && !ft_isalnum(*s1))
+		char c1 = *s1;
+		char c2 = *s2;
+		while (c1 && c1 == '_')
+		{
 			s1++;
-		while (*s2 && !ft_isalnum(*s2))
+			c1 = *s1;
+		}
+		while (c2 && c2 == '_')
+		{
 			s2++;
-		char c1 = ft_tolower(*s1);
-		char c2 = ft_tolower(*s2);
+			c2 = *s2;
+		}
+		c1 = ft_tolower(*s1);
+		c2 = ft_tolower(*s2);
 		if (c1 != c2)
 			return (c1 - c2);
 		s1++;
@@ -78,3 +86,55 @@ void quick_sort(int *tab, int start, int end, char *str_table )
 	if (i < end)
 		quick_sort(tab, i, end, str_table);
 }
+
+
+/* 
+➜  tests git:(master) ✗ ./test.sh ../test.so 
+
+==== SAME SYM SAME ADDR ??? ====
+1,16c1,16
+< 00000000000012ac r $d
+< 00000000000012ac r $d
+< 00000000000012ac r $d
+< 00000000000012ac r $d
+< 00000000000012ac r $d
+< 00000000000012ac r $d
+< 00000000000012ac r $d
+< 00000000000012ac r $d
+< 0000000000000840 n $x
+< 0000000000000840 n $x
+< 0000000000000840 n $x
+< 0000000000000840 n $x
+< 0000000000000840 n $x
+< 0000000000000840 n $x
+< 0000000000000840 n $x
+< 0000000000000840 n $x
+---
+> 0000000000020080 d $d
+> 000000000001fde0 d $d
+> 000000000001fdd8 d $d
+> 00000000000011e4 r $d
+> 0000000000020088 b $d
+> 00000000000010d8 r $d
+> 0000000000001248 r $d
+> 00000000000012ac r $d
+> 0000000000000960 t $x
+> 0000000000000820 t $x
+> 00000000000010c0 t $x
+> 0000000000000830 t $x
+> 00000000000010cc t $x
+> 0000000000000980 t $x
+> 0000000000000a48 t $x
+> 0000000000000840 t $x
+
+
+===== BASED ON EXTENSION (.so) =====
+26c26
+< 000000000001fde8 A _DYNAMIC
+---
+> 000000000001fde8 a _DYNAMIC
+34c34
+< 000000000001ffb8 A _GLOBAL_OFFSET_TABLE_
+---
+> 000000000001ffb8 a _GLOBAL_OFFSET_TABLE_
+*/
