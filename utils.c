@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 10:01:20 by eburnet           #+#    #+#             */
-/*   Updated: 2026/04/08 13:12:42 by eburnet          ###   ########.fr       */
+/*   Updated: 2026/05/29 20:46:36 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char find_sym_type_64(Elf64_Sym sym_tab_elem, Elf64_Shdr *s_head_first)
 	int sh_flags = -1;
 	int st_type = ELF64_ST_TYPE(sym_tab_elem.st_info);
 	int st_bind = ELF64_ST_BIND(sym_tab_elem.st_info);
-	// ft_printf("DEBUG: st_type:%d st_bind:%d\n", st_type, st_bind);
+	ft_printf("DEBUG: st_type:%d st_bind:%d\n", st_type, st_bind);
 	if (sym_tab_elem.st_shndx == SHN_ABS && st_type != STT_FILE && e_type != ET_DYN)
 		return ('A');
 	else if (sym_tab_elem.st_shndx == SHN_ABS && st_type != STT_FILE && e_type == ET_DYN)
@@ -38,7 +38,7 @@ char find_sym_type_64(Elf64_Sym sym_tab_elem, Elf64_Shdr *s_head_first)
 	}
 	sh_type = s_head_first[sym_tab_elem.st_shndx].sh_type;
 	sh_flags = s_head_first[sym_tab_elem.st_shndx].sh_flags;
-	// ft_printf("DEBUG:  sh_type:%d sh_flags:%d\n", sh_type, sh_flags);
+	ft_printf("DEBUG:  sh_type:%d sh_flags:%d\n", sh_type, sh_flags);
 	if (st_type == STT_FUNC && sh_type == SHT_PROGBITS && sh_flags & SHF_EXECINSTR && sh_flags & SHF_ALLOC)
 	{
 		if (st_bind == STB_GLOBAL)

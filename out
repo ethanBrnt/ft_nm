@@ -1,0 +1,144 @@
+000000000000038c r __abi_tag
+0000000000006010 B __bss_start
+0000000000006010 b completed.0
+                 w __cxa_finalize@GLIBC_2.2.5
+0000000000006000 D __data_start
+0000000000006000 W data_start
+00000000000011f0 t deregister_tm_clones
+0000000000001260 t __do_global_dtors_aux
+0000000000005d68 d __do_global_dtors_aux_fini_array_entry
+0000000000006008 D __dso_handle
+0000000000005d70 d _DYNAMIC
+0000000000006010 D _edata
+0000000000006018 B _end
+0000000000006012 B e_type
+000000000000193c T find_sym_str_tab_32
+0000000000001b6e T find_sym_str_tab_64
+000000000000260b T find_sym_type_32
+0000000000002397 T find_sym_type_64
+00000000000034a4 T _fini
+00000000000012a0 t frame_dummy
+0000000000005d60 d __frame_dummy_init_array_entry
+00000000000046a8 r __FRAME_END__
+                 U free@GLIBC_2.2.5
+                 U fstat@GLIBC_2.33
+0000000000003215 t ft_count_digits
+0000000000002bbd T ft_isalnum
+0000000000002bfa T ft_memset
+0000000000002d7e T ft_p
+00000000000030e6 T ft_printf
+0000000000002d50 T ft_putchar
+0000000000003382 T ft_putnbr
+0000000000003280 T ft_putnbr_base
+0000000000003311 T ft_putnbr_unsigned
+0000000000003434 T ft_putstr
+0000000000002c39 T ft_putstr_fd
+0000000000001e0d T ft_strcmp
+0000000000001e60 T ft_strcmp_skip_special_char
+0000000000002c78 T ft_strlen
+0000000000002ca9 T ft_strncmp
+0000000000002d27 T ft_tolower
+0000000000002e23 T ft_type_management
+0000000000005f60 d _GLOBAL_OFFSET_TABLE_
+                 w __gmon_start__
+0000000000004164 r __GNU_EH_FRAME_HDR
+0000000000001000 T _init
+0000000000004000 R _IO_stdin_used
+                 w _ITM_deregisterTMCloneTable
+                 w _ITM_registerTMCloneTable
+                 U __libc_start_main@GLIBC_2.34
+0000000000001d98 T main
+                 U malloc@GLIBC_2.2.5
+                 U memset@GLIBC_2.2.5
+                 U mmap@GLIBC_2.2.5
+                 U open@GLIBC_2.2.5
+00000000000028ab T padding_management
+00000000000029a1 T parsing_mmaping
+                 U perror@GLIBC_2.2.5
+                 U printf@GLIBC_2.2.5
+                 U putchar@GLIBC_2.2.5
+                 U puts@GLIBC_2.2.5
+00000000000021bd T quick_sort_32
+0000000000001fa0 T quick_sort_64
+0000000000001220 t register_tm_clones
+00000000000012a9 T sort_print_data_32
+0000000000001602 T sort_print_data_64
+                 U __stack_chk_fail@GLIBC_2.4
+00000000000011c0 T _start
+0000000000001f6f T swap
+0000000000006010 D __TMC_END__
+                 U write@GLIBC_2.2.5
+sym_tab_index: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 
+start=0, end=84, i=77, j=76, pivot=44
+start=0, end=76, i=39, j=38, pivot=40
+start=0, end=38, i=34, j=33, pivot=20
+start=0, end=33, i=18, j=17, pivot=61
+start=0, end=17, i=8, j=7, pivot=51
+start=0, end=7, i=4, j=3, pivot=23
+start=0, end=3, i=2, j=0, pivot=2
+start=2, end=3, i=3, j=1, pivot=63
+start=4, end=7, i=5, j=4, pivot=3
+start=5, end=7, i=7, j=5, pivot=83
+start=8, end=17, i=9, j=8, pivot=33
+start=9, end=17, i=14, j=12, pivot=26
+start=9, end=12, i=10, j=9, pivot=4
+start=10, end=12, i=11, j=10, pivot=6
+start=11, end=12, i=12, j=11, pivot=54
+start=14, end=17, i=16, j=15, pivot=85
+start=14, end=15, i=15, j=14, pivot=60
+start=16, end=17, i=17, j=15, pivot=85
+start=18, end=33, i=20, j=19, pivot=43
+start=18, end=19, i=19, j=18, pivot=43
+start=20, end=33, i=24, j=23, pivot=10
+start=20, end=23, i=22, j=21, pivot=9
+start=20, end=21, i=21, j=19, pivot=49
+start=22, end=23, i=23, j=22, pivot=10
+start=24, end=33, i=28, j=27, pivot=22
+start=24, end=27, i=25, j=24, pivot=24
+start=25, end=27, i=27, j=26, pivot=22
+start=25, end=26, i=26, j=25, pivot=82
+start=28, end=33, i=30, j=29, pivot=14
+start=28, end=29, i=29, j=28, pivot=14
+start=30, end=33, i=33, j=32, pivot=71
+start=30, end=32, i=32, j=31, pivot=79
+start=30, end=31, i=31, j=30, pivot=15
+start=34, end=38, i=35, j=34, pivot=20
+start=35, end=38, i=36, j=35, pivot=56
+start=36, end=38, i=38, j=37, pivot=57
+start=36, end=37, i=37, j=35, pivot=21
+start=39, end=76, i=73, j=72, pivot=59
+start=39, end=72, i=51, j=50, pivot=19
+start=39, end=50, i=49, j=48, pivot=68
+start=39, end=48, i=41, j=40, pivot=72
+start=39, end=40, i=40, j=39, pivot=72
+start=41, end=48, i=48, j=47, pivot=18
+start=41, end=47, i=46, j=45, pivot=17
+start=41, end=45, i=43, j=42, pivot=16
+start=41, end=42, i=42, j=40, pivot=73
+start=43, end=45, i=45, j=43, pivot=77
+start=46, end=47, i=47, j=45, pivot=17
+start=49, end=50, i=50, j=48, pivot=68
+start=51, end=72, i=71, j=70, pivot=34
+start=51, end=70, i=58, j=57, pivot=32
+start=51, end=57, i=55, j=53, pivot=27
+start=51, end=53, i=53, j=51, pivot=28
+start=55, end=57, i=57, j=55, pivot=55
+start=58, end=70, i=66, j=65, pivot=52
+start=58, end=65, i=62, j=61, pivot=58
+start=58, end=61, i=60, j=58, pivot=31
+start=60, end=61, i=61, j=59, pivot=65
+start=62, end=65, i=64, j=63, pivot=45
+start=62, end=63, i=63, j=61, pivot=58
+start=64, end=65, i=65, j=64, pivot=69
+start=66, end=70, i=69, j=67, pivot=70
+start=66, end=67, i=67, j=66, pivot=80
+start=69, end=70, i=70, j=68, pivot=46
+start=71, end=72, i=72, j=71, pivot=66
+start=73, end=76, i=76, j=75, pivot=1
+start=73, end=75, i=74, j=73, pivot=59
+start=74, end=75, i=75, j=74, pivot=5
+start=77, end=84, i=81, j=79, pivot=62
+start=77, end=79, i=79, j=77, pivot=75
+start=81, end=84, i=83, j=81, pivot=76
+start=83, end=84, i=84, j=83, pivot=35
+QUICK SORT DONE

@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 11:49:33 by eburnet           #+#    #+#             */
-/*   Updated: 2026/04/02 12:32:11 by eburnet          ###   ########.fr       */
+/*   Updated: 2026/05/29 20:44:35 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	ft_strcmp(const char *s1, const char *s2)
 
 int ft_strcmp_skip_special_char(char *s1, char *s2)
 {
+	// printf("s1: %s, s2: %s \n", s1, s2);
 	char *origin_s1 = s1;
 	char *origin_s2 = s2;
 
@@ -58,34 +59,6 @@ void	swap(int *a, int *b)
 	*b = tmp;
 }
 
-void quick_sort_64(Elf64_Sym *sym_table, int *sym_tab_index, int start, int end, char *str_table)
-{
-	int i = start;
-	int j = end;
-	int pivot = sym_tab_index[(start + end) / 2];
-	while (i <= j)
-	{
-		// CHECK SANS && sym_tab_index[i] 
-		// while (i <= end && sym_table[sym_tab_index[i]].st_value  && ft_strcmp_skip_special_char(str_table + pivot, str_table + sym_table[sym_tab_index[i]].st_name) > 0)
-		while (i <= end && sym_table[sym_tab_index[i]].st_value  && ft_strcmp_skip_special_char(str_table + pivot, str_table + sym_tab_index[i]) > 0)
-			i++;
-		// CHECK SANS && sym_tab_index[j] 
-		// while (j >= start && sym_table[sym_tab_index[j]].st_value && ft_strcmp_skip_special_char(str_table + pivot, str_table + sym_table[sym_tab_index[j]].st_name) < 0)
-		while (j >= start && sym_table[sym_tab_index[j]].st_value && ft_strcmp_skip_special_char(str_table + pivot, str_table + sym_tab_index[j]) < 0)
-			j--;
-		if (i <= j)
-		{
-			swap(&sym_tab_index[i], &sym_tab_index[j]);
-			i++;
-			j--;
-		}
-	}
-	if (start < j)
-		quick_sort_64(sym_table, sym_tab_index, start, j, str_table);
-	if (i < end)
-		quick_sort_64(sym_table, sym_tab_index, i, end, str_table);
-}
-
 void quick_sort_32(Elf32_Sym *sym_table, int *sym_tab_index, int start, int end, char *str_table)
 {
 	int i = start;
@@ -93,11 +66,9 @@ void quick_sort_32(Elf32_Sym *sym_table, int *sym_tab_index, int start, int end,
 	int pivot = sym_tab_index[(start + end) / 2];
 	while (i <= j)
 	{
-		// CHECK SANS && sym_tab_index[i] 
-		while (i <= end && sym_tab_index[i] && ft_strcmp_skip_special_char(str_table + pivot, str_table + sym_table[sym_tab_index[i]].st_name) > 0)
+		while (i <= end && ft_strcmp_skip_special_char(str_table + sym_table[pivot].st_name, str_table + sym_table[sym_tab_index[i]].st_name) > 0)
 			i++;
-		// CHECK SANS && sym_tab_index[j] 
-		while (j >= start && sym_tab_index[j] && ft_strcmp_skip_special_char(str_table + pivot, str_table + sym_table[sym_tab_index[j]].st_name) < 0)
+		while (j >= start &&  ft_strcmp_skip_special_char(str_table + sym_table[pivot].st_name, str_table + sym_table[sym_tab_index[j]].st_name) < 0)
 			j--;
 		if (i <= j)
 		{
@@ -110,6 +81,30 @@ void quick_sort_32(Elf32_Sym *sym_table, int *sym_tab_index, int start, int end,
 		quick_sort_32(sym_table, sym_tab_index, start, j, str_table);
 	if (i < end)
 		quick_sort_32(sym_table, sym_tab_index, i, end, str_table);
+}
+
+void quick_sort_64(Elf64_Sym *sym_table, int *sym_tab_index, int start, int end, char *str_table)
+{
+	int i = start;
+	int j = end;
+	int pivot = sym_tab_index[(start + end) / 2];
+	while (i <= j)
+	{
+		while (i <= end && ft_strcmp_skip_special_char(str_table + sym_table[pivot].st_name, str_table + sym_table[sym_tab_index[i]].st_name) > 0)
+			i++;
+		while (j >= start &&  ft_strcmp_skip_special_char(str_table + sym_table[pivot].st_name, str_table + sym_table[sym_tab_index[j]].st_name) < 0)
+			j--;
+		if (i <= j)
+		{
+			swap(&sym_tab_index[i], &sym_tab_index[j]);
+			i++;
+			j--;
+		}
+	}
+	if (start < j)
+		quick_sort_64(sym_table, sym_tab_index, start, j, str_table);
+	if (i < end)
+		quick_sort_64(sym_table, sym_tab_index, i, end, str_table);
 }
 
 
