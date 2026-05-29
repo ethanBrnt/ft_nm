@@ -22,7 +22,6 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }
 
-
 int ft_strcmp_skip_special_char(char *s1, char *s2)
 {
 	char *origin_s1 = s1;
@@ -32,12 +31,12 @@ int ft_strcmp_skip_special_char(char *s1, char *s2)
 	{
 		char c1 = *s1;
 		char c2 = *s2;
-		while (c1 && c1 == '_')
+		while (c1 && !ft_isalnum(c1) && c1 != '$')
 		{
 			s1++;
 			c1 = *s1;
 		}
-		while (c2 && c2 == '_')
+		while (c2 && !ft_isalnum(c2) && c2 != '$')
 		{
 			s2++;
 			c2 = *s2;
@@ -89,6 +88,8 @@ void quick_sort(int *tab, int start, int end, char *str_table )
 
 
 /* 
+
+// sort adress et find name from address 
 ➜  tests git:(master) ✗ ./test.sh ../test.so 
 
 ==== SAME SYM SAME ADDR ??? ====
