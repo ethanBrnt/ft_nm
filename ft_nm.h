@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 15:39:13 by eburnet           #+#    #+#             */
-/*   Updated: 2026/05/30 13:08:29 by eburnet          ###   ########.fr       */
+/*   Updated: 2026/05/30 13:22:21 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,3 +37,6 @@ int sort_print_data_32(void *ptr_e_stroff, int symbol_nbr, void *ptr_e_symoff, E
 int sort_print_data_64(void *ptr_e_stroff, int symbol_nbr, void *ptr_e_symoff, Elf64_Shdr *s_head_first);
 void stable_fix_64(Elf64_Sym *sym_table, int *sym_tab_index, int printable_sym_nbr, char *str_table);
 void stable_fix_32(Elf32_Sym *sym_table, int *sym_tab_index, int printable_sym_nbr, char *str_table);
+int	ft_strcmp(const char *s1, const char *s2);
+int ft_strcmp_skip_special_char(char *s1, char *s2);
+void	swap(int *a, int *b);
