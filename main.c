@@ -6,155 +6,73 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 11:51:06 by eburnet           #+#    #+#             */
-/*   Updated: 2026/05/29 20:44:20 by eburnet          ###   ########.fr       */
+/*   Updated: 2026/05/30 12:55:52 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 uint16_t e_type;
 
-int sort_print_data_32(void *ptr_e_stroff, int symbol_nbr, void *ptr_e_symoff, Elf32_Shdr *s_head_first )
+char *padding_management(int st_value, char type, bool is_32)
 {
-	Elf32_Sym *sym_table = (Elf32_Sym *)ptr_e_symoff;
-	char *str_table = (char *)ptr_e_stroff;
-	int *sym_tab_index = malloc(sizeof(int) * symbol_nbr);
-	if (!sym_tab_index)
-		return (1);
-	int printable_sym_nbr = 0;
-	for (int i = 0; i < symbol_nbr; i++)
+    int bits = 16;
+	char *padding = malloc(sizeof(char) * 17);
+	if (!padding)
+		return (NULL);
+	if (is_32)
+		bits = 8;
+	memset(padding, '0', bits);
+	padding[bits] = '\0';
+	int len = 0;
+	unsigned long addr = st_value;
+	if (st_value == 0)
+		len = 1;
+	while (addr > 0)
 	{
-		if (sym_table[i].st_name != 0)
-		{
-			sym_tab_index[printable_sym_nbr] = i;
-			printable_sym_nbr++;
-		}
+		addr = addr / 16;
+		len++;
 	}
-	quick_sort_32(sym_table, sym_tab_index, 0, printable_sym_nbr, str_table);
-	for (int i = 0; i <= printable_sym_nbr; i++)
+	memset(padding + (bits - len), '\0', 1);
+	if (type == 'U' || type == 'w')
+		memset(padding, ' ', bits);
+	return (padding);
+}
+
+void *parsing_mmaping(int argc, char *argv[])
+{
+	int file_length = 0;
+	char *filename = "a.out";
+	if (argc > 2)
+		return (perror("ft_nm: Too much args"), NULL);
+	if (argc == 2)
 	{
-		char *name = str_table + sym_table[sym_tab_index[i]].st_name;
-		if (!name || ft_strlen(name) == 0)
-			continue;
-		char type = find_sym_type_32(sym_table[sym_tab_index[i]], s_head_first);
-		if (type == 'e')
-			continue;
-		char *padding = padding_management(sym_table[sym_tab_index[i]].st_value, type, true);
-		if (!padding)
-			return (free(sym_tab_index), 1);
-		if (type == 'U' || type == 'w')
-			ft_printf("%s %c %s\n", padding, type, name);
+		if (argv[1] == NULL || ft_strncmp(argv[1], "", 1) == 0)
+			return (NULL);
 		else
-			ft_printf("%s%x %c %s\n", padding, sym_table[sym_tab_index[i]].st_value, type, name);
-		free(padding);
+			filename = argv[1];
 	}
-	free(sym_tab_index);
-	return (0);
-}
-
-int sort_print_data_64(void *ptr_e_stroff, int symbol_nbr, void *ptr_e_symoff, Elf64_Shdr *s_head_first )
-{
-	Elf64_Sym *sym_table = (Elf64_Sym *)ptr_e_symoff;
-	char *str_table = (char *)ptr_e_stroff;
-	int *sym_tab_index = malloc(sizeof(int) * symbol_nbr);
-	if (!sym_tab_index)
-		return (1);
-	int printable_sym_nbr = 0;
-	for (int i = 0; i < symbol_nbr; i++)
+	int fd_file = open(filename, O_RDONLY);
+	if (fd_file < 0)
 	{
-		if (sym_table[i].st_name != 0)
-		{
-			sym_tab_index[printable_sym_nbr] = i;
-			printable_sym_nbr++;
-		}
+		ft_putstr_fd("ft_nm: '", 2);
+		ft_putstr_fd(filename, 2);
+		perror("'");
+		return (NULL);
 	}
-	quick_sort_64(sym_table, sym_tab_index, 0, printable_sym_nbr, str_table);
-	for (int i = 0; i <= printable_sym_nbr; i++)
+	struct stat fstat_res;
+	fstat(fd_file, &fstat_res);
+	if (!S_ISREG(fstat_res.st_mode))
 	{
-		char *name = str_table + sym_table[sym_tab_index[i]].st_name;
-		if (!name || ft_strlen(name) == 0)
-			continue;
-		char type = find_sym_type_64(sym_table[sym_tab_index[i]], s_head_first);
-		if (type == 'e')
-			continue;
-		char *padding = padding_management(sym_table[sym_tab_index[i]].st_value, type, false);
-		if (!padding)
-			return (free(sym_tab_index), 1);
-		if (type == 'U' || type == 'w')
-			ft_printf("%s %c %s\n", padding, type, name);
-		else
-			ft_printf("%s%x %c %s\n", padding, sym_table[sym_tab_index[i]].st_value, type, name);
-		free(padding);
+		ft_putstr_fd("ft_nm: Warning: '", 2);
+		ft_putstr_fd(filename, 2);
+		ft_putstr_fd("' is a directory\n", 2);
+		return (NULL);
 	}
-	free(sym_tab_index);
-	return (0);
-}
-
-int find_sym_str_tab_32(void *ptr)
-{
-	Elf32_Ehdr *e_head = (Elf32_Ehdr *)ptr;
-	if (e_head->e_ident[EI_MAG0] != ELFMAG0 || e_head->e_ident[EI_MAG1] != ELFMAG1 || e_head->e_ident[EI_MAG2] != ELFMAG2 || e_head->e_ident[EI_MAG3] != ELFMAG3)
-		return (ft_putstr_fd("ft_nm: file format not recognized\n", 2), 1);
-	if (e_head->e_shstrndx != e_head->e_shnum - 1)
-		return (ft_putstr_fd("ft_nm: file format not recognized\n", 2), 1);
-	void *ptr_e_shoff = (char *)ptr + e_head->e_shoff;
-	int section_nbr = e_head->e_shnum;
-	Elf32_Shdr *s_head_first = (Elf32_Shdr *)ptr_e_shoff;
-	Elf32_Shdr *s_head_sym;
-	Elf32_Shdr *s_head_str;
-	for (int i = 0; i < section_nbr; i++)
-	{
-		Elf32_Shdr *s_head = (Elf32_Shdr *)ptr_e_shoff;
-		if (s_head && s_head->sh_type && (s_head->sh_type == SHT_SYMTAB || s_head->sh_type == SHT_DYNSYM))
-			s_head_sym = s_head;
-		else if (s_head && s_head->sh_type && s_head->sh_type == SHT_STRTAB && s_head != s_head_first + e_head->e_shstrndx)
-			s_head_str = s_head;
-		ptr_e_shoff = ptr_e_shoff + sizeof(Elf32_Shdr);
-	}
-	if (!s_head_sym || !s_head_str)
-		return (ft_putstr_fd("ft_nm: SymTab|StrTab not found\n", 2), 1);
-	if (s_head_sym->sh_entsize <= 0)
-		return (ft_putstr_fd("ft_nm: file format not recognized\n", 2), 1);
-	int symbol_nbr = s_head_sym->sh_size / s_head_sym->sh_entsize;
-	void *ptr_e_symoff = (char *)ptr + s_head_sym->sh_offset;
-	void *ptr_e_stroff = (char *)ptr + s_head_str->sh_offset;
-	if (sort_print_data_32(ptr_e_stroff, symbol_nbr, ptr_e_symoff, s_head_first) == 1)
-		return (1);
-	else
-		return (0);
-}
-
-int find_sym_str_tab_64(void *ptr)
-{
-	Elf64_Ehdr *e_head = (Elf64_Ehdr *)ptr;
-	if (e_head->e_ident[EI_MAG0] != ELFMAG0 || e_head->e_ident[EI_MAG1] != ELFMAG1 || e_head->e_ident[EI_MAG2] != ELFMAG2 || e_head->e_ident[EI_MAG3] != ELFMAG3)
-		return (ft_putstr_fd("ft_nm: file format not recognized\n", 2), 1);
-	if (e_head->e_shstrndx != e_head->e_shnum - 1)
-		return (ft_putstr_fd("ft_nm: file format not recognized\n", 2), 1);
-	void *ptr_e_shoff = (char *)ptr + e_head->e_shoff;
-	int section_nbr = e_head->e_shnum;
-	Elf64_Shdr *s_head_first = (Elf64_Shdr *)ptr_e_shoff;
-	Elf64_Shdr *s_head_sym;
-	Elf64_Shdr *s_head_str;
-	for (int i = 0; i < section_nbr; i++)
-	{
-		Elf64_Shdr *s_head = (Elf64_Shdr *)ptr_e_shoff;
-		if (s_head && s_head->sh_type && (s_head->sh_type == SHT_SYMTAB || s_head->sh_type == SHT_DYNSYM))
-			s_head_sym = s_head;
-		else if (s_head && s_head->sh_type && s_head->sh_type == SHT_STRTAB && s_head != s_head_first + e_head->e_shstrndx)
-			s_head_str = s_head;
-		ptr_e_shoff = ptr_e_shoff + sizeof(Elf64_Shdr);
-	}
-	if (!s_head_sym || !s_head_str)
-		return (ft_putstr_fd("ft_nm: SymTab|StrTab not found\n", 2), 1);
-	if (s_head_sym->sh_entsize <= 0)
-		return (ft_putstr_fd("ft_nm: file format not recognized\n", 2), 1);
-	int symbol_nbr = s_head_sym->sh_size / s_head_sym->sh_entsize;
-	void *ptr_e_symoff = (char *)ptr + s_head_sym->sh_offset;
-	void *ptr_e_stroff = (char *)ptr + s_head_str->sh_offset;
-	if (sort_print_data_64(ptr_e_stroff, symbol_nbr, ptr_e_symoff, s_head_first) == 1)
-		return (1);
-	else
-		return (0);
+	file_length = fstat_res.st_size;
+	void *ptr = mmap(NULL, file_length, PROT_READ, MAP_PRIVATE, fd_file, 0);
+	if (ptr == MAP_FAILED)
+		return (ft_putstr_fd("ft_nm: mmap failed\n", 2), NULL);
+	return (ptr);
 }
 
 int main(int argc, char *argv[])

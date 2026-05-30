@@ -11,13 +11,13 @@ if [ ! -f "$1" ]
     exit 1
 fi
 
-if [ ! -f ../ft_nm  ]
+if [ ! -f ./ft_nm  ]
   then
-    echo "../ft_nm not found"
+    echo "./ft_nm not found"
     exit 1
 fi
 
-../ft_nm "$1" > out_ft_nm
-nm "$1" > out_nm
-diff out_ft_nm out_nm
-diff out_ft_nm out_nm > ./diff_nms 
+./ft_nm "$1" > ./tests/out_ft_nm
+nm "$1" > ./tests/out_nm
+diff ./tests/out_ft_nm ./tests/out_nm
+diff ./tests/out_ft_nm ./tests/out_nm > ./tests/diff_nms 
