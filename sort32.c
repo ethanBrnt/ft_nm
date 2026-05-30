@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/30 12:56:36 by eburnet           #+#    #+#             */
-/*   Updated: 2026/05/30 12:57:09 by eburnet          ###   ########.fr       */
+/*   Updated: 2026/05/30 13:07:56 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ void quick_sort_32(Elf32_Sym *sym_table, int *sym_tab_index, int start, int end,
 		quick_sort_32(sym_table, sym_tab_index, i, end, str_table);
 }
 
-void stable_fix_32(Elf32_Sym *sym_table, int *sym_tab_index, int count, char *str_table)
+void stable_fix_32(Elf32_Sym *sym_table, int *sym_tab_index, int printable_sym_nbr, char *str_table)
 {
     int i = 0;
-    while (i < count)
+    while (i < printable_sym_nbr)
     {
         int j = i + 1;
-        while (j < count && ft_strcmp_skip_special_char(str_table + sym_table[sym_tab_index[i]].st_name, str_table + sym_table[sym_tab_index[j]].st_name) == 0)
+        while (j < printable_sym_nbr && ft_strcmp_skip_special_char(str_table + sym_table[sym_tab_index[i]].st_name, str_table + sym_table[sym_tab_index[j]].st_name) == 0)
             j++;
         for (int k = i + 1; k < j; k++)
         {

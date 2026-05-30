@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 15:39:13 by eburnet           #+#    #+#             */
-/*   Updated: 2026/05/30 12:54:16 by eburnet          ###   ########.fr       */
+/*   Updated: 2026/05/30 13:08:29 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,5 @@ int find_sym_str_tab_64(void *ptr);
 int find_sym_str_tab_32(void *ptr);
 int sort_print_data_32(void *ptr_e_stroff, int symbol_nbr, void *ptr_e_symoff, Elf32_Shdr *s_head_first);
 int sort_print_data_64(void *ptr_e_stroff, int symbol_nbr, void *ptr_e_symoff, Elf64_Shdr *s_head_first);
-void stable_fix_64(Elf64_Sym *sym_table, int *sym_tab_index, int count, char *str_table);
-void stable_fix_32(Elf32_Sym *sym_table, int *sym_tab_index, int count, char *str_table);
+void stable_fix_64(Elf64_Sym *sym_table, int *sym_tab_index, int printable_sym_nbr, char *str_table);
+void stable_fix_32(Elf32_Sym *sym_table, int *sym_tab_index, int printable_sym_nbr, char *str_table);
