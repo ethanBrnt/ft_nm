@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   nm_32.c                                            :+:      :+:    :+:   */
+/*   agregation_32.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/30 11:58:12 by eburnet           #+#    #+#             */
-/*   Updated: 2026/05/30 12:56:33 by eburnet          ###   ########.fr       */
+/*   Updated: 2026/05/30 13:35:16 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,9 @@ int sort_print_data_32(void *ptr_e_stroff, int symbol_nbr, void *ptr_e_symoff, E
 			printable_sym_nbr++;
 		}
 	}
-	quick_sort_32(sym_table, sym_tab_index, 0, printable_sym_nbr, str_table);
-	for (int i = 0; i <= printable_sym_nbr; i++)
+	quick_sort_32(sym_table, sym_tab_index, 0, printable_sym_nbr - 1, str_table);
+	stable_fix_32(sym_table, sym_tab_index, printable_sym_nbr - 1, str_table);
+	for (int i = 0; i < printable_sym_nbr; i++)
 	{
 		char *name = str_table + sym_table[sym_tab_index[i]].st_name;
 		if (!name || ft_strlen(name) == 0)
